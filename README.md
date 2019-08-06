@@ -1,2 +1,2 @@
-# scinly-factory
+# yoga-js
 website training project

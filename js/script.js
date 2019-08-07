@@ -34,7 +34,9 @@ window.addEventListener("DOMContentLoaded", function(){
 
     // timer
 
-    let deadline = "2019-08-07";
+    let deadline = new Date();
+    deadline.setDate(deadline.getDate() + 1);
+    
 
     function getTimeRemaining(endtime){
         let timeTimer = Date.parse(endtime) - Date.parse(new Date());
@@ -72,4 +74,31 @@ window.addEventListener("DOMContentLoaded", function(){
     }
 
     setClock("timer", deadline)
+
+
+    let moreBtn = document.querySelector(".more");
+    let overlay = document.querySelector(".overlay");
+    let popupClose = document.querySelector(".popup-close");
+
+    let desckBtn = document.querySelectorAll(".description-btn");
+    
+    function openPopup(nameBtn){
+        nameBtn.addEventListener("click", function(){
+            overlay.style.display = "block";
+            this.classList.add("more-splash");
+        });
+        popupClose.addEventListener("click", function(){
+            overlay.style.display = "none";
+            moreBtn.classList.remove("more-splash");
+            
+        });
+    }
+
+    openPopup(moreBtn);
+    openPopup(desckBtn[0]);
+    openPopup(desckBtn[1]);
+    openPopup(desckBtn[2]);
+    openPopup(desckBtn[3]);
+
+    
 });

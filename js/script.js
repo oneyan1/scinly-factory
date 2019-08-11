@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", function(){
+window.addEventListener("DOMContentLoaded", () => {
     "use strict";
 
     let tab = document.querySelectorAll(".info-header-tab");
@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", function(){
         }
     }
 
-    info.addEventListener("click", function(event){
+    info.addEventListener("click", (event) => {
         let target = event.target;
         for(let i = 0; i<tab.length;i++){
             if(target == tab[i]){
@@ -87,7 +87,7 @@ window.addEventListener("DOMContentLoaded", function(){
             overlay.style.display = "block";
             this.classList.add("more-splash");
         });
-        popupClose.addEventListener("click", function(){
+        popupClose.addEventListener("click", () => {
             overlay.style.display = "none";
             moreBtn.classList.remove("more-splash");
             
@@ -100,5 +100,78 @@ window.addEventListener("DOMContentLoaded", function(){
     openPopup(desckBtn[2]);
     openPopup(desckBtn[3]);
 
+    //form
+
+    function formData(){
+        let message = {
+            loading : "Загрузка...",
+            succes: "Спасибо! Скоро мы вам перезвоним!",
+            failure: "Произошла ошибка..."
+        }
     
+        let formModal = document.querySelector(".main-form");
+        let formMain = document.querySelector("#form");
+
+        let input = document.getElementsByTagName("input");
+        
+        let statusMessage = document.createElement("div");
+        statusMessage.classList.add("status");
+    
+        function ajaxForm(form){
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+                form.appendChild(statusMessage);
+                let formData = new FormData(form);
+
+                function postData(){
+                    return new Promise((resolve, reject)=>{
+                        let request = new XMLHttpRequest();
+                        request.open("POST", "server.php");
+                        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                        request.onreadystatechange = () => {
+                            if(request.readyState < 4){
+                                resolve();
+                            }
+                            else if( request.readyState === 4 && request.statuts == 200){
+                                resolve();
+                            }
+                            else{
+                                reject();
+                            }
+                        }
+
+                        request.send(formData);
+                    })
+                }               //end postData()
+            
+                function clearInput(){
+                    for(let i = 0; i < input.length; i++){
+                        input[i].value = "";
+                    }
+                }
+                
+                postData(formData)
+                            .then(() => {
+                                statusMessage.textContent = message.loading;
+                            })
+                            .then(() => {
+                                statusMessage.textContent = message.succes;
+                            })
+                            .catch(() => {
+                                statusMessage.textContent = message.failure;
+                            })
+                            .then(() => {
+                                clearInput();
+                            })
+            });
+        }
+    
+        ajaxForm(formModal);
+        ajaxForm(formMain);
+    
+    }
+   
+    formData();
+
 });

@@ -174,4 +174,68 @@ window.addEventListener("DOMContentLoaded", () => {
    
     formData();
 
+
+    // slider
+
+    let slideIndex = 0;
+    let slides = document.querySelectorAll(".slider-item");
+    let prev = document.querySelector(".prev");
+    let next = document.querySelector(".next");
+    let dotsWrap = document.querySelector(".slider-dots");
+    let dots = document.querySelectorAll(".dot");
+
+    showSlide(slideIndex);
+
+    function showSlide(slideNum){
+        
+        if(slideNum > slides.length -1){
+            slideIndex = 0;
+        }
+        if(slideIndex < 0){
+            slideIndex = slides.length -1;
+        }
+        slides.forEach((item)=> item.style.display = "none");
+        dots.forEach((item)=> item.classList.remove("dot-active"));
+
+        slides[slideIndex].style.display = "block";
+        dots[slideIndex].classList.add("dot-active");
+    }
+    
+    function plusSlides(slideNum){
+        showSlide(slideIndex += slideNum);
+    }
+
+    function currentSlide(slideNum){
+        showSlide(slideIndex = slideNum);
+    }
+
+    let autoChangeSlide = setInterval(()=>{
+        plusSlides(+1);
+    }, 5000)
+
+    function stopAutoChange(){
+        if(autoChangeSlide == 2){
+            clearInterval(autoChangeSlide);
+        }
+    }
+
+    prev.addEventListener("click", ()=>{
+        stopAutoChange();
+        plusSlides(-1);
+    });
+    
+    next.addEventListener("click", ()=>{
+        stopAutoChange();
+        plusSlides(1);
+    });
+    
+    dotsWrap.addEventListener("click", (event)=> {
+        for(let i = 0; i< dots.length; i++){
+            if(event.target.classList.contains("dot") && event.target == dots[i]){
+                currentSlide(i);
+            }
+        }
+    });
+
+
 });

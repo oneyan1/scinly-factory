@@ -237,5 +237,45 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Calc
 
+    let persons = document.querySelectorAll(".counter-block-input")[0];
+    let restDays = document.querySelectorAll(".counter-block-input")[1];
+    let place = document.getElementById("select");
+    let totalValue = document.getElementById("total");
+    let personsSum = 0, daysSum = 0, total = 0;
+
+    totalValue.innerHTML = 0;
+
+    persons.addEventListener("input", function(){
+        personsSum = +this.value;
+        total = 1700 * personsSum * daysSum;
+        if(restDays.value == ""){
+            totalValue.innerHTML = 0;
+        }
+        else{
+            totalValue.innerHTML = total;
+        }
+    });
+
+    restDays.addEventListener("input", function(){
+        daysSum = +this.value;
+        total = 1700 * personsSum * daysSum;
+        if(persons.value == ""){
+            totalValue.innerHTML = 0;
+        }
+        else{
+            totalValue.innerHTML = total;
+        }
+    });
+
+    place.addEventListener("change", function(){
+        if(persons.value == "" || restDays == ""){
+            totalValue.innerHTML = 0;
+        }
+        else{
+            let tmp = total;
+            totalValue.innerHTML = tmp * this.options[this.selectedIndex].value;
+        }
+    });
 });
